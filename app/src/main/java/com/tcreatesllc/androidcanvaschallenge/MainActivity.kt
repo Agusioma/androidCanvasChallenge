@@ -111,16 +111,12 @@ fun CameraFocusIndicator() {
                 )
 
                 lineTo(0f, 115f)
-                //lineTo(0f, 60f)
-                //close()
             }
 
             var bottomLeftCornerExtension = Path().apply {
                 reset()
                 moveTo(13f, 147.8f)
                 lineTo(45f, 147.8f)
-                //lineTo(0f, 60f)
-                //close()
             }
 
             var bottomRightCorner = Path().apply {
@@ -160,31 +156,22 @@ fun CameraFocusIndicator() {
                 )
                 lineTo(227.5f, 36f)
 
-                //lineTo(0f, 60f)
-                //close()
             }
 
             var topRightCornerExtension = Path().apply {
                 reset()
                 moveTo(214f, 0f)
                 lineTo(185f, 0f)
-
             }
 
-            var stroke9 = Path().apply {
-                reset()
-                moveTo(214f, 0f)
-                lineTo(185f, 0f)
-            }
-
-            var stroke10 = Path().apply {
+            var plusVerticalBar = Path().apply {
                 reset()
                 moveTo(115.5f, 55f)
                 lineTo(116f, 94f)
 
             }
 
-            var stroke11 = Path().apply {
+            var plusHorizontalBar = Path().apply {
                 reset()
                 moveTo(94.5f, 74f)
 
@@ -258,7 +245,7 @@ fun CameraFocusIndicator() {
 
 
             drawPath(
-                stroke10,
+                plusVerticalBar,
                 color = Color.White,
                 style = Stroke(
                     width = 2f,
@@ -266,7 +253,7 @@ fun CameraFocusIndicator() {
             )
 
             drawPath(
-                stroke11,
+                plusHorizontalBar,
                 color = Color.White,
                 style = Stroke(
                     width = 2f,
