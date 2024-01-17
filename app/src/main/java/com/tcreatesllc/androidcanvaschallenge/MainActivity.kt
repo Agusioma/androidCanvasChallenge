@@ -8,6 +8,7 @@ import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,6 +21,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
@@ -28,7 +31,11 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.drawText
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import com.tcreatesllc.androidcanvaschallenge.ui.theme.AndroidCanvasChallengeTheme
@@ -169,6 +176,43 @@ fun singleThinEdgeBar() {
         }
     }
 }
+
+@Composable
+fun roundRect(width: Dp, height: Dp) {
+    Canvas(
+        modifier = Modifier
+            .width(width)
+            .height(height)
+            .padding(30.dp)
+            .rotate(-10f)
+    ) {
+        drawRoundRect(
+            color = Color(0xFF2B292A),
+            size = Size(width = size.width, height = size.height),
+            cornerRadius = CornerRadius(x = 45.dp.toPx(), y = 45.dp.toPx())
+        )
+    }
+}
+
+@Composable
+fun canvasText() {
+    val textMeasurer = rememberTextMeasurer()
+
+    Canvas(
+        modifier = Modifier
+            .width(100.dp)
+            .height(70.dp)
+            .padding(20.dp)
+            .rotate(-10f)
+    ) {
+        drawText(
+            textMeasurer = textMeasurer,
+            text = "Hello",
+            style = TextStyle(color = Color.White)
+        )
+    }
+}
+
 
 @Composable
 fun CameraFocusIndicator() {
@@ -376,6 +420,7 @@ fun CameraFocusIndicator() {
 @Composable
 fun AppPreview() {
     AndroidCanvasChallengeTheme {
-        singleThinEdgeBar()
+      roundRect(300.dp, 300.dp)
+        canvasText()
     }
 }
