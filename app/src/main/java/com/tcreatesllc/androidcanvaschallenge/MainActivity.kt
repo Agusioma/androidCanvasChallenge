@@ -10,6 +10,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -24,6 +25,7 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
@@ -59,6 +61,111 @@ class MainActivity : ComponentActivity() {
                     CameraFocusIndicator()
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun roundedEdgeBarRow() {
+    Box(contentAlignment = Alignment.Center, modifier = Modifier.wrapContentSize()) {
+        Canvas(
+            modifier = Modifier
+                .align(Alignment.Center)
+                .fillMaxWidth()
+                .height(13.dp)
+                .padding(5.dp)
+        ) {
+            var n = 16
+            for (j in 0..n) {
+                var i = (j * 20).toFloat()
+                drawLine(
+                    color = Color.White,
+                    start = Offset(i, 0f),
+                    end = Offset(i, size.height),
+                    strokeWidth = 15f,
+                    cap = StrokeCap.Round,
+                )
+            }
+
+        }
+    }
+}
+
+@Composable
+fun sharpEdgeBarRow() {
+    Box(contentAlignment = Alignment.Center, modifier = Modifier.wrapContentSize()) {
+        Canvas(
+            modifier = Modifier
+                .align(Alignment.Center)
+                .fillMaxWidth()
+                .height(100.dp)
+                .padding(5.dp)
+        ) {
+            var n = 85
+            for (j in 0..n) {
+                var i = (j * 12.5).toFloat()
+                var barHeight = (1..6).random().toFloat()
+                drawLine(
+                    color = Color.White,
+                    start = Offset(i, size.height),
+                    end = Offset(i, size.height / barHeight),
+                    strokeWidth = 8f,
+                    cap = StrokeCap.Square,
+                )
+            }
+
+        }
+    }
+}
+
+@Composable
+fun thinEdgeBarRow() {
+    Box(contentAlignment = Alignment.Center, modifier = Modifier.wrapContentSize()) {
+        Canvas(
+            modifier = Modifier
+                .align(Alignment.Center)
+                .fillMaxWidth()
+                .height(25.dp)
+                .padding(1.dp)
+        ) {
+            var n = 14
+            for (j in 0..n) {
+                //15 - the strokeWidth
+                var i = (j * ((size.width / 15) - 0)).toFloat()
+
+                drawLine(
+                    color = Color.White,
+                    start = Offset(i, 0f),
+                    end = Offset(i, size.height),
+                    strokeWidth = 2f,
+                    cap = StrokeCap.Square,
+                )
+            }
+
+        }
+    }
+}
+
+@Composable
+fun singleThinEdgeBar() {
+    Box(contentAlignment = Alignment.Center, modifier = Modifier.wrapContentSize()) {
+        Canvas(
+            modifier = Modifier
+                .align(Alignment.Center)
+                .width(10.dp)
+                .height(50.dp)
+                .padding(5.dp)
+        ) {
+
+            drawLine(
+                color = Color.White,
+                start = Offset(0f, 0f),
+                end = Offset(0f, size.height),
+                strokeWidth = 2f,
+                cap = StrokeCap.Square,
+            )
+
+
         }
     }
 }
@@ -269,6 +376,6 @@ fun CameraFocusIndicator() {
 @Composable
 fun AppPreview() {
     AndroidCanvasChallengeTheme {
-        CameraFocusIndicator()
+        singleThinEdgeBar()
     }
 }
