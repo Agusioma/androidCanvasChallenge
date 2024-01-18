@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -80,6 +81,83 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+}
+
+@Composable
+fun rotationDemoOne() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(300.dp)
+            //.height(195.dp)
+            .padding(top = 5.dp, bottom = 5.dp)
+
+    ) {
+        rotationDemoComponent(
+            mods = Modifier.align(Alignment.TopStart),
+            rotationAngle = -10f,
+            label = "4000p",
+            bgColor = 0xFF5E635D
+        )
+        rotationDemoComponent(
+            mods = Modifier.align(Alignment.TopCenter),
+            rotationAngle = 0f,
+            label = "3000p",
+            bgColor = 0xFF2B292A
+
+        )
+        rotationDemoComponent(
+            mods = Modifier.align(Alignment.TopEnd),
+            rotationAngle = 0f,
+            label = "2000p",
+            bgColor = 0xFF2B292A
+        )
+        rotationDemoComponent(
+            mods = Modifier.align(Alignment.BottomStart),
+            rotationAngle = 0f,
+            label = "1440p",
+            bgColor = 0xFF2B292A
+        )
+        rotationDemoComponent(
+            mods = Modifier.align(Alignment.BottomCenter),
+            rotationAngle = 0f,
+            label = "980p",
+            bgColor = 0xFF2B292A
+        )
+        rotationDemoComponent(
+            mods = Modifier.align(Alignment.BottomEnd),
+            rotationAngle = 0f,
+            label = "720p",
+            bgColor = 0xFF2B292A
+        )
+    }
+}
+
+@Composable
+fun rotationDemoComponent(mods: Modifier, rotationAngle: Float, label: String, bgColor: Long) {
+    Box(
+        modifier = mods
+            //.height(195.dp)
+            .padding(top = 5.dp, bottom = 5.dp)
+
+    ) {
+        roundRect(
+            width = 168.dp,
+            height = 168.dp,
+            rotationAngle = rotationAngle,
+            mods = Modifier.align(
+                Alignment.Center
+            ),
+            bgColor = bgColor
+        )
+        canvasText(
+            mods = Modifier.align(
+                Alignment.Center
+            ),
+            rotationAngle = rotationAngle,
+            label = label
+        )
     }
 }
 
@@ -221,10 +299,10 @@ fun roundedEdgeBarRow() {
             modifier = Modifier
                 .align(Alignment.Center)
                 .fillMaxWidth()
-                .height(13.dp)
-                .padding(5.dp)
+                .height(19.dp)
+                .padding(7.dp)
         ) {
-            var n = 16
+            var n = 52
             for (j in 0..n) {
                 var i = (j * 20).toFloat()
                 drawLine(
@@ -319,37 +397,42 @@ fun singleThinEdgeBar(mods: Modifier) {
 }
 
 @Composable
-fun roundRect(width: Dp, height: Dp) {
+fun roundRect(width: Dp, height: Dp, rotationAngle: Float, mods: Modifier, bgColor: Long) {
     Canvas(
-        modifier = Modifier
+        modifier = mods
             .width(width)
             .height(height)
             .padding(30.dp)
-            .rotate(-10f)
+            .rotate(rotationAngle)
     ) {
         drawRoundRect(
-            color = Color(0xFF2B292A),
+            color = Color(bgColor),
             size = Size(width = size.width, height = size.height),
-            cornerRadius = CornerRadius(x = 45.dp.toPx(), y = 45.dp.toPx())
+            cornerRadius = CornerRadius(x = 30.dp.toPx(), y = 30.dp.toPx())
         )
     }
 }
 
 @Composable
-fun canvasText() {
+fun canvasText(mods: Modifier, rotationAngle: Float, label: String) {
     val textMeasurer = rememberTextMeasurer()
+    /*
 
+    The text doesn't fit too well. You can instead use the roundedRect as a Shape ->
+    https://tusharpingale.hashnode.dev/creating-custom-shapes-with-paths-in-jetpack-compose
+
+     */
     Canvas(
-        modifier = Modifier
-            .width(100.dp)
+        modifier = mods
+            .width(95.dp)
             .height(70.dp)
-            .padding(20.dp)
-            .rotate(-10f)
+            .padding(start = 22.5.dp, top = 20.dp)
+            .rotate(rotationAngle)
     ) {
         drawText(
             textMeasurer = textMeasurer,
-            text = "Hello",
-            style = TextStyle(color = Color.White)
+            text = label,
+            style = TextStyle(color = Color.White, fontSize = 18.sp)
         )
     }
 }
@@ -561,9 +644,9 @@ fun CameraFocusIndicator() {
 @Composable
 fun AppPreview() {
     AndroidCanvasChallengeTheme {
-        //roundRect(300.dp, 300.dp)
-        // canvasText()
         //brightnessCalibrator()
-        imageDepthViz()
+        //imageDepthViz()
+        //roundedEdgeBarRow()
+       rotationDemoOne()
     }
 }
