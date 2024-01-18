@@ -8,6 +8,7 @@ import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,8 +17,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,13 +34,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.input.pointer.PointerIcon.Companion.Text
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowCompat
 import com.tcreatesllc.androidcanvaschallenge.ui.theme.AndroidCanvasChallengeTheme
 
@@ -69,6 +76,44 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+}
+
+@Composable
+fun brightnessCalibrator() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(95.dp)
+            .padding(top = 5.dp, bottom = 5.dp)
+
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.crescent_moon_svgrepo_com),
+            contentDescription = null,
+            tint = Color.White,
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .padding(start = 5.dp)
+        )
+        Text(
+            text = "-2,3",
+            modifier = Modifier
+                .background(color = Color.LightGray)
+                .align(Alignment.TopCenter)
+                .padding(start = 3.dp, end = 3.dp),
+            fontSize = 13.sp
+        )
+        Icon(
+            painter = painterResource(id = R.drawable.sun_2_svgrepo_com),
+            contentDescription = null,
+            tint = Color.White,
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(end = 5.dp)
+        )
+        thinEdgeBarRow(mods = Modifier.align(Alignment.BottomCenter))
+        singleThinEdgeBar(mods = Modifier.align(Alignment.BottomCenter))
     }
 }
 
@@ -126,16 +171,16 @@ fun sharpEdgeBarRow() {
 }
 
 @Composable
-fun thinEdgeBarRow() {
-    Box(contentAlignment = Alignment.Center, modifier = Modifier.wrapContentSize()) {
+fun thinEdgeBarRow(mods: Modifier) {
+    Box(contentAlignment = Alignment.Center, modifier = mods.wrapContentSize()) {
         Canvas(
             modifier = Modifier
                 .align(Alignment.Center)
                 .fillMaxWidth()
                 .height(25.dp)
-                .padding(1.dp)
+                .padding(start = 5.dp, end = 5.dp)
         ) {
-            var n = 14
+            var n = 16
             for (j in 0..n) {
                 //15 - the strokeWidth
                 var i = (j * ((size.width / 15) - 0)).toFloat()
@@ -154,14 +199,14 @@ fun thinEdgeBarRow() {
 }
 
 @Composable
-fun singleThinEdgeBar() {
-    Box(contentAlignment = Alignment.Center, modifier = Modifier.wrapContentSize()) {
+fun singleThinEdgeBar(mods: Modifier) {
+    Box(contentAlignment = Alignment.Center, modifier = mods.wrapContentSize()) {
         Canvas(
             modifier = Modifier
                 .align(Alignment.Center)
-                .width(10.dp)
+                .width(2.dp)
+                .padding(start = 1.dp)
                 .height(50.dp)
-                .padding(5.dp)
         ) {
 
             drawLine(
@@ -171,7 +216,6 @@ fun singleThinEdgeBar() {
                 strokeWidth = 2f,
                 cap = StrokeCap.Square,
             )
-
 
         }
     }
@@ -420,7 +464,8 @@ fun CameraFocusIndicator() {
 @Composable
 fun AppPreview() {
     AndroidCanvasChallengeTheme {
-      roundRect(300.dp, 300.dp)
-        canvasText()
+        //roundRect(300.dp, 300.dp)
+        // canvasText()
+        brightnessCalibrator()
     }
 }
