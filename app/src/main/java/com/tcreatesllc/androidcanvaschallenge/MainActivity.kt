@@ -11,6 +11,9 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -39,6 +42,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -76,6 +80,99 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+}
+
+@Composable
+fun imageDepthViz() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(195.dp)
+            .padding(top = 5.dp, bottom = 5.dp)
+
+    ) {
+        textColumn(
+            text1 = "Lens",
+            text2 = "24mm",
+            mods = Modifier.align(Alignment.TopStart)
+        )
+        textColumn(
+            text1 = "ISO",
+            text2 = "Auto",
+            mods = Modifier.align(Alignment.TopCenter)
+        )
+        textColumn(
+            text1 = "Shutter",
+            text2 = "1/1800",
+            mods = Modifier.align(Alignment.TopEnd)
+        )
+
+        sharpEdgeBarRow(mods = Modifier.align(Alignment.Center))
+
+        Row(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .fillMaxWidth()
+                .padding(start = 10.dp, end = 10.dp)
+        ) {
+            Text(
+                text = "H.264",
+                modifier = Modifier
+                    .padding(start = 3.dp, end = 10.dp),
+                fontSize = 13.sp,
+                color = Color.LightGray
+            )
+            Text(
+                text = "16:9",
+                modifier = Modifier
+                    .background(color = Color.LightGray)
+                    .padding(start = 3.dp, end = 3.dp),
+                fontSize = 13.sp
+            )
+            Text(
+                text = "2h 25m Left",
+                modifier = Modifier
+                    .padding(start = 10.dp),
+                fontSize = 13.sp,
+                color = Color.LightGray
+            )
+            Spacer(Modifier.weight(1f))
+            Text(
+                text = "Batt",
+                modifier = Modifier
+                    .padding(end = 3.dp),
+                fontSize = 13.sp,
+                color = Color.LightGray
+            )
+            Text(
+                text = "56%",
+                modifier = Modifier
+                    .padding(end = 3.dp),
+                fontSize = 13.sp,
+                color = Color.White
+            )
+        }
+    }
+}
+
+@Composable
+fun textColumn(text1: String, text2: String, mods: Modifier) {
+    Column(mods.wrapContentSize()) {
+        Text(
+            text = text1,
+            modifier = Modifier
+                .padding(start = 3.dp, end = 3.dp),
+            fontSize = 13.sp,
+            color = Color.LightGray
+        )
+        Text(
+            text = text2,
+            modifier = Modifier
+                .padding(start = 3.dp, end = 3.dp),
+            fontSize = 15.sp,
+            color = Color.White
+        )
     }
 }
 
@@ -144,16 +241,16 @@ fun roundedEdgeBarRow() {
 }
 
 @Composable
-fun sharpEdgeBarRow() {
-    Box(contentAlignment = Alignment.Center, modifier = Modifier.wrapContentSize()) {
+fun sharpEdgeBarRow(mods: Modifier) {
+    Box(contentAlignment = Alignment.Center, modifier = mods.wrapContentSize()) {
         Canvas(
             modifier = Modifier
                 .align(Alignment.Center)
                 .fillMaxWidth()
                 .height(100.dp)
-                .padding(5.dp)
+                .padding(start = 10.dp, end = 10.dp)
         ) {
-            var n = 85
+            var n = 82
             for (j in 0..n) {
                 var i = (j * 12.5).toFloat()
                 var barHeight = (1..6).random().toFloat()
@@ -466,6 +563,7 @@ fun AppPreview() {
     AndroidCanvasChallengeTheme {
         //roundRect(300.dp, 300.dp)
         // canvasText()
-        brightnessCalibrator()
+        //brightnessCalibrator()
+        imageDepthViz()
     }
 }
