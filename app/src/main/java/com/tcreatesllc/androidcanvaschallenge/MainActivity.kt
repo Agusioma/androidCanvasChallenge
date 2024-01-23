@@ -646,7 +646,7 @@ fun AppPreview() {
     AndroidCanvasChallengeTheme {
         //brightnessCalibrator()
         //imageDepthViz()
-        //roundedEdgeBarRow()
-       rotationDemoOne()
+        roundedEdgeBarRow()
+       //rotationDemoOne()
     }
 }
