@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
@@ -35,6 +36,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -639,6 +641,84 @@ fun CameraFocusIndicator() {
     }
 }
 
+@Composable
+fun paintTest() {
+    Canvas(modifier = Modifier.size(width = 250.dp, height = 150.dp)) {
+        val path = Path().apply {
+
+           // moveTo(0f, 0f)
+            arcTo(
+                rect = Rect(
+                    offset = Offset(0f, 0f),
+                    size = Size(
+                        (size.width * 0.375).toFloat(),
+                        size.height
+                    )
+                ),
+                startAngleDegrees = 90f,
+                sweepAngleDegrees = -180f,
+                forceMoveTo = false
+            )
+
+
+            /*lineTo((size.width * 0.75).toFloat(),
+                size.height)*/
+
+            close()
+        }
+
+
+
+        val path2 = Path().apply {
+            //moveTo(0f, 0f)  // Starting point
+           // moveTo(50f, 50f)
+
+            // First control point
+            val firstControlX = (size.width * 0.1875).toFloat()
+            val firstControlY = size.height/4
+
+            // Second control point
+            val secondControlX = (size.width * 0.28125).toFloat()
+            val secondControlY = size.height/2
+
+            // End point
+            val endX = (size.width * 0.375).toFloat()
+            val endY = size.height
+
+            cubicTo(
+                firstControlX, firstControlY,
+                secondControlX, secondControlY,
+                endX, endY
+            )
+
+            lineTo((size.width * 0.625).toFloat(),
+                size.height)
+
+            // First control point
+            val firstControlX2 = (size.width * 0.71875).toFloat()
+            val firstControlY2 = size.height/2
+
+            // Second control point
+            val secondControlX2 = (size.width * 0.8125).toFloat()
+            val secondControlY2 = (size.height/4).toFloat()
+
+            // End point
+            val endX2 = size.width
+            val endY2 = 0f
+
+            cubicTo(
+                firstControlX2, firstControlY2,
+                secondControlX2, secondControlY2,
+                endX2, endY2
+            )
+
+            lineTo(0f,0f)
+
+        }
+
+        drawPath(path2, color = Color(0xFFDAA88D),)
+    }
+}
 
 @Preview(showBackground = false)
 @Composable
@@ -646,7 +726,8 @@ fun AppPreview() {
     AndroidCanvasChallengeTheme {
         //brightnessCalibrator()
         //imageDepthViz()
-        roundedEdgeBarRow()
-       //rotationDemoOne()
+        //roundedEdgeBarRow()
+        //rotationDemoOne()
+        paintTest()
     }
 }
