@@ -716,7 +716,7 @@ fun paintTest() {
 }
 
 @Composable
-fun bezierTest() {
+fun contourDemo() {
     Canvas(modifier = Modifier.size(width = 250.dp, height = 250.dp).border(width = 0.5.dp, color = Color.White)) {
         val contourPath1 = Path().apply {
             moveTo((size.width * 0.91).toFloat(), (size.height).toFloat())  // Starting point
@@ -797,16 +797,40 @@ fun bezierTest() {
             // moveTo(50f, 50f)
 
             // First control point
-            val firstControlX = (size.width*0.70).toFloat()
-            val firstControlY = (size.height*0.69).toFloat()
+            val firstControlX = (size.width*0.77).toFloat()
+            val firstControlY = (size.height*0.9).toFloat()
 
             // Second control point
-            val secondControlX = (size.width * 0.82).toFloat()
+            val secondControlX = (size.width * 0.65).toFloat()
             val secondControlY = (size.height*0.64).toFloat()
 
             // End point
             val endX = (size.width)
-            val endY = (size.height*0.66).toFloat()
+            val endY = (size.height*0.67).toFloat()
+
+            cubicTo(
+                firstControlX, firstControlY,
+                secondControlX, secondControlY,
+                endX, endY
+            )
+
+        }
+
+        val contourPath5 = Path().apply {
+            moveTo((size.width * 0.62).toFloat(), (size.height).toFloat())  // Starting point
+            // moveTo(50f, 50f)
+
+            // First control point
+            val firstControlX = (size.width*0.74).toFloat()
+            val firstControlY = (size.height*0.87).toFloat()
+
+            // Second control point
+            val secondControlX = (size.width * 0.52).toFloat()
+            val secondControlY = (size.height*0.57).toFloat()
+
+            // End point
+            val endX = (size.width)
+            val endY = (size.height*0.61).toFloat()
 
             cubicTo(
                 firstControlX, firstControlY,
@@ -836,6 +860,12 @@ fun bezierTest() {
             width = 2f,
             cap = StrokeCap.Round
         ))
+
+        drawPath(contourPath5, color = Color(0xFFDAA88D),style = Stroke(
+            width = 2f,
+            cap = StrokeCap.Round
+        ))
+
     }
 }
 
@@ -847,6 +877,6 @@ fun AppPreview() {
         //imageDepthViz()
         //roundedEdgeBarRow()
         //rotationDemoOne()
-        bezierTest()
+        contourDemo()
     }
 }
