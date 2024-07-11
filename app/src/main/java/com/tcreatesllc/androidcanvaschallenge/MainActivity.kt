@@ -34,8 +34,12 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Paint
+import androidx.compose.ui.graphics.PaintingStyle
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
@@ -78,6 +82,31 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+}
+
+@Composable
+fun DashedLineDemo() {
+    Canvas(modifier = Modifier.size(200.dp)) {
+        val startX = 20f
+        val startY = size.height / 2
+        val endX = size.width - 20f
+        val endY = size.height / 2
+
+        val paint = Paint().apply {
+            color = Color.White
+            style = PaintingStyle.Stroke
+            strokeWidth = 4f
+            pathEffect = PathEffect.dashPathEffect(floatArrayOf(1f, 60f), 0f)
+        }
+
+        drawLine(
+            color = Color.White,
+            start = Offset(startX, startY),
+            end = Offset(endX, endY),
+            strokeWidth = 4f,
+            pathEffect = paint.pathEffect
+        )
     }
 }
 
@@ -717,7 +746,9 @@ fun paintTest() {
 
 @Composable
 fun contourDemo() {
-    Canvas(modifier = Modifier.size(width = 250.dp, height = 250.dp).border(width = 0.5.dp, color = Color.White)) {
+    Canvas(modifier = Modifier
+        .size(width = 250.dp, height = 250.dp)
+        .border(width = 0.5.dp, color = Color.White)) {
         val contourPath1 = Path().apply {
             moveTo((size.width * 0.91).toFloat(), (size.height).toFloat())  // Starting point
             // moveTo(50f, 50f)
@@ -869,6 +900,166 @@ fun contourDemo() {
     }
 }
 
+
+@Composable
+fun wedgeComponent(mods: Modifier, rotationAngle: Float, label: String, bgColor: Long) {
+    Box(
+        modifier = mods
+            //.height(195.dp)
+            .padding(top = 5.dp, bottom = 5.dp)
+
+    ) {
+        roundRect(
+            width = 168.dp,
+            height = 168.dp,
+            rotationAngle = rotationAngle,
+            mods = Modifier.align(
+                Alignment.Center
+            ),
+            bgColor = bgColor
+        )
+        canvasText(
+            mods = Modifier.align(
+                Alignment.Center
+            ),
+            rotationAngle = rotationAngle,
+            label = label
+        )
+    }
+}
+
+@Composable
+fun DrawTrapezium() {
+    Canvas(modifier = Modifier.fillMaxSize()) {
+        val canvasWidth = size.width
+        val canvasHeight = size.height
+        val cornerRadius = 16.dp.toPx()
+        // Define the points of the inverted trapezium
+        val topLeft = Offset(x = canvasWidth * 0.15f, y = canvasHeight * 0.25f)
+        val topRight = Offset(x = canvasWidth * 0.85f, y = canvasHeight * 0.25f)
+        val bottomRight = Offset(x = canvasWidth * 0.75f, y = canvasHeight * 0.75f)
+        val bottomLeft = Offset(x = canvasWidth * 0.25f, y = canvasHeight * 0.75f)
+
+        // Create a Path to draw the inverted trapezium
+            /* val path = Path().apply {
+            moveTo(topLeft.x, topLeft.y)
+            lineTo(topRight.x, topRight.y)
+            lineTo(bottomRight.x, bottomRight.y)
+            lineTo(bottomLeft.x, bottomLeft.y)
+            close()
+        }*/
+
+        val path = Path().apply {
+            addRoundRect(
+                roundRect = androidx.compose.ui.geometry.RoundRect(
+                    left = topLeft.x,
+                    top = topLeft.y,
+                    right = topRight.x,
+                    bottom = bottomRight.y,
+                    topLeftCornerRadius = CornerRadius(cornerRadius, cornerRadius),
+                    topRightCornerRadius = CornerRadius(cornerRadius, cornerRadius),
+                    bottomRightCornerRadius = CornerRadius(cornerRadius, cornerRadius),
+                    bottomLeftCornerRadius = CornerRadius(cornerRadius, cornerRadius)
+                )
+            )
+        }
+
+        // Draw the inverted trapezium
+        drawPath(
+            path = path,
+            color = Color.Blue
+        )
+    }
+}
+
+@Composable
+fun DrawInvertedTrapeziumWithRoundedCorners(mods: Modifier) {
+    Canvas(modifier = mods) {
+        val canvasWidth = size.width
+        val canvasHeight = size.height/2
+        val cornerRadius = 26.dp.toPx()
+
+        // Define the points of the inverted trapezium
+        val topLeft = Offset(x = canvasWidth * 0.15f, y = canvasHeight * 0.25f)
+        val topRight = Offset(x = canvasWidth * 0.85f, y = canvasHeight * 0.25f)
+        val bottomRight = Offset(x = canvasWidth * 0.75f, y = canvasHeight * 0.75f)
+        val bottomLeft = Offset(x = canvasWidth * 0.25f, y = canvasHeight * 0.75f)
+
+        // Create a Path to draw the inverted trapezium with rounded corners
+        val path = Path().apply {
+            moveTo(topLeft.x + cornerRadius, topLeft.y)
+
+            // Top edge with top right corner rounded
+            lineTo(topRight.x - cornerRadius, topRight.y)
+            arcTo(
+                rect = Rect(
+                    topLeft = Offset(topRight.x - cornerRadius * 2, topRight.y - cornerRadius),
+                    bottomRight = topRight + Offset(0f, cornerRadius)
+                ),
+                startAngleDegrees = 270f,
+                sweepAngleDegrees = 90f,
+                forceMoveTo = true
+            )
+
+            // Right edge with bottom right corner rounded
+            lineTo(bottomRight.x, bottomRight.y - cornerRadius)
+            arcTo(
+                rect = Rect(
+                    topLeft = Offset(bottomRight.x - cornerRadius * 2, bottomRight.y - cornerRadius * 2),
+                    bottomRight = bottomRight + Offset(0f, 0f)
+                ),
+                startAngleDegrees = 0f,
+                sweepAngleDegrees = 90f,
+                forceMoveTo = false
+            )
+
+            // Bottom edge with bottom left corner rounded
+            lineTo(bottomLeft.x + cornerRadius, bottomLeft.y)
+            arcTo(
+                rect = Rect(
+                    topLeft = Offset(bottomLeft.x - cornerRadius * 2, bottomLeft.y - cornerRadius * 2),
+                    bottomRight = bottomLeft + Offset(0f, 0f)
+                ),
+                startAngleDegrees = 90f,
+                sweepAngleDegrees = 90f,
+                forceMoveTo = false
+            )
+
+            // Left edge with top left corner rounded
+            lineTo(topLeft.x - cornerRadius * 2, topLeft.y)
+            arcTo(
+                rect = Rect(
+                    topLeft = Offset(topLeft.x - cornerRadius * 2, topLeft.y - cornerRadius),
+                    bottomRight = topLeft + Offset(0f, cornerRadius)
+                ),
+                startAngleDegrees = 180f,
+                sweepAngleDegrees = 90f,
+                forceMoveTo = false
+            )
+            /*
+            arcTo(
+                rect = Rect(
+                    topLeft = Offset(topRight.x - cornerRadius * 2, topRight.y - cornerRadius),
+                    bottomRight = topRight + Offset(0f, cornerRadius)
+                ),
+                startAngleDegrees = 270f,
+                sweepAngleDegrees = 90f,
+                forceMoveTo = true
+            )
+             */
+
+            close()
+        }
+
+        // Draw the inverted trapezium with rounded corners
+        drawPath(
+            path = path,
+            color = Color.Blue,
+            style = Fill
+        )
+    }
+}
+
 @Preview(showBackground = false)
 @Composable
 fun AppPreview() {
@@ -877,6 +1068,21 @@ fun AppPreview() {
         //imageDepthViz()
         //roundedEdgeBarRow()
         //rotationDemoOne()
-        contourDemo()
+        //contourDemo()
+        //DashedLineDemo()
+        /*wedgeComponent(
+            mods = Modifier,
+            rotationAngle = 0f,
+            label = "720p",
+            bgColor = 0xFF2B292A
+        )*/
+        //DrawTrapezium()
+
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            DrawInvertedTrapeziumWithRoundedCorners(Modifier.height(200.dp).width(200.dp))
+        }
     }
 }
